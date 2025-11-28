@@ -1,0 +1,69 @@
+
+Folder Structure
+
+siem-lab-setup/
+├─ wazuh-config/
+│  ├─ ossec.conf
+│  └─ rules/
+│     └─ local_rules.xml
+├─ dashboards/
+│  └─ sample-dashboard.png
+├─ docs/
+│  └─ setup-guide.md
+└─ README.md
+
+Example Config
+
+ossec.conf snippet
+
+<ossec_config>
+  <client>
+    <server-ip>192.168.1.10</server-ip>
+  </client>
+
+  <alerts>
+    <log_alert_level>7</log_alert_level>
+    <email_alerts>yes</email_alerts>
+  </alerts>
+
+  <rules>
+    <include>rules/local_rules.xml</include>
+  </rules>
+</ossec_config>
+
+local_rules.xml snippet
+
+<group name="ssh">
+  <rule id="100100" level="10">
+    <decoded_as>sshd</decoded_as>
+    <description>Multiple SSH failed logins</description>
+    <frequency>5</frequency>
+    <timeframe>60</timeframe>
+  </rule>
+</group>
+
+
+---
+
+Professional README.md Example (for Linux Security)
+
+# Linux Security Lab
+
+## Overview
+Advanced Linux security scripts and configurations for auditing, monitoring, and hardening Linux systems.
+
+## Tools Used
+- Bash/Shell scripts
+- Linux commands (netstat, lastlog, grep, etc.)
+- UFW / iptables
+
+## Scripts
+1. *user-audit.sh* – Audit users and sudo privileges
+2. *log-monitor.sh* – Monitor login attempts
+3. *system-hardening.sh* – Apply basic hardening
+4. *backup-logs.sh* – Backup system logs
+
+## Usage
+```bash
+chmod +x scripts/user-audit.sh
+./scripts/user-audit.sh
