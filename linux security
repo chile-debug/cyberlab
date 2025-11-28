@@ -1,0 +1,97 @@
+
+Folder Structure
+
+linux-security/
+├─ scripts/
+│  ├─ user-audit.sh
+│  ├─ log-monitor.sh
+│  ├─ system-hardening.sh
+│  └─ backup-logs.sh
+├─ docs/
+│  ├─ screenshots/
+│  │  ├─ user-audit.png
+│  │  └─ log-monitor.png
+│  └─ explanation.md
+└─ README.md
+
+Advanced Scripts
+
+a) user-audit.sh – Full audit
+
+#!/bin/bash
+# Linux User Audit Script
+# Author: Daniel Uyo
+
+echo "===== LINUX USER AUDIT ====="
+echo "Date: $(date)"
+echo
+
+# List all users
+echo "[*] System Users:"
+cut -d: -f1 /etc/passwd
+echo
+
+# List sudoers
+echo "[*] Users with Sudo Privileges:"
+getent group sudo
+echo
+
+# Home directory permissions
+echo "[*] Home Directory Permissions:"
+ls -ld /home/*
+echo
+
+# Check for inactive users
+echo "[*] Inactive Users (no login in 90 days):"
+awk -F: '{print $1}' /etc/passwd | while read user; do
+  lastlog -u $user | awk 'NR>1 {if ($4=="**Never") print $1,$3,$4; else if ($4<"90") print $1,$4}'
+done
+echo "===== AUDIT COMPLETE ====="
+
+
+---
+
+b) log-monitor.sh – Advanced login & auth log monitor
+
+#!/bin/bash
+# Log Monitor Script
+
+echo "===== SYSTEM LOGIN & AUTH LOG MONITOR ====="
+echo "Date: $(date)"
+echo
+
+# Failed login attempts
+echo "[*] Last 20 Failed Login Attempts:"
+grep "Failed password" /var/log/auth.log | tail -n 20
+echo
+
+# Successful logins
+echo "[*] Last 20 Successful Logins:"
+grep "Accepted password" /var/log/auth.log | tail -n 20
+echo
+
+# Suspicious activity detection
+echo "[*] Detect Multiple Failed Attempts from Same IP:"
+awk '/Failed password/ {print $(NF-3)}' /var/log/auth.log | sort | uniq -c | sort -nr | head -5
+echo "===== MONITOR COMPLETE ====="
+
+
+---
+
+c) system-hardening.sh – Example hardening
+
+#!/bin/bash
+# Basic Linux Hardening
+
+# Disable root login via SSH
+sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+systemctl restart sshd
+
+# Disable unused services
+systemctl disable avahi-daemon
+systemctl disable cups
+
+# Ensure firewall active
+ufw enable
+
+echo "System hardening applied!"
