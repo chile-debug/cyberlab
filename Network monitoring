@@ -1,0 +1,51 @@
+
+Folder Structure
+
+network-monitoring/
+├─ captures/
+│  ├─ lab-test1.pcap
+│  └─ lab-test2.pcap
+├─ scripts/
+│  ├─ netstat-monitor.sh
+│  └─ packet-capture.sh
+├─ docs/
+│  ├─ network-topology.png
+│  └─ explanation.md
+└─ README.md
+
+Advanced Scripts
+
+a) netstat-monitor.sh – Active connections
+
+#!/bin/bash
+# Monitor TCP/UDP connections
+
+echo "===== ACTIVE NETWORK CONNECTIONS ====="
+echo "Date: $(date)"
+echo
+
+# List all active connections
+netstat -tunlp
+
+# Top 5 IPs connecting
+echo
+echo "[*] Top 5 IPs by connection count:"
+netstat -ntu | awk '{print $5}' | cut -d: -f1 | sort | uniq -c | sort -nr | head -5
+
+echo "===== NETWORK MONITOR COMPLETE ====="
+
+b) packet-capture.sh – Advanced tcpdump capture
+
+#!/bin/bash
+# Packet capture with tcpdump
+
+INTERFACE="eth0"
+COUNT=50
+OUTPUT="captures/capture_$(date +%F_%H-%M-%S).pcap"
+
+echo "[*] Capturing $COUNT packets on $INTERFACE..."
+sudo tcpdump -i $INTERFACE -nn -c $COUNT -w $OUTPUT
+echo "[*] Capture saved to $OUTPUT"
+
+
+---
