@@ -1,0 +1,45 @@
+Folder Structure
+
+ids-firewall-lab/
+├─ snort-rules/
+│  ├─ local.rules
+│  └─ ssh-bruteforce.rules
+├─ firewall/
+│  ├─ iptables.conf
+│  └─ ufw-rules.sh
+├─ docs/
+│  ├─ screenshots/
+│  │  ├─ snort-alert.png
+│  │  └─ firewall-status.png
+│  └─ explanation.md
+└─ README.md
+
+Advanced Examples
+
+a) Snort Rules
+
+# SSH Brute Force Detection
+alert tcp any any -> any 22 (msg:"SSH Brute Force"; threshold:type threshold, track by_src, count 5, seconds 60; sid:100001; rev:1;)
+
+# Web Scan Detection
+alert tcp any any -> any 80 (msg:"HTTP Scan Attempt"; flow:to_server,established; content:"GET"; http_method; threshold:type both, track by_src, count 10, seconds 60; sid:100002; rev:1;)
+
+b) iptables Firewall
+
+#!/bin/bash
+# Advanced iptables firewall
+
+iptables -F
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT ACCEPT
+iptables -A INPUT -i lo -j ACCEPT
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -s 192.168.1.100 -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -j LOG --log-prefix "Dropped Packet: "
+echo "Advanced firewall rules applied!"
+
+
+---
