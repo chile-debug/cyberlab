@@ -1,7 +1,6 @@
 
 
 Advanced Scripts
-
 a) user-audit.sh – Full audit
 
 #!/bin/bash
