@@ -1,19 +1,3 @@
-Folder Structure
-
-ids-firewall-lab/
-├─ snort-rules/
-│  ├─ local.rules
-│  └─ ssh-bruteforce.rules
-├─ firewall/
-│  ├─ iptables.conf
-│  └─ ufw-rules.sh
-├─ docs/
-│  ├─ screenshots/
-│  │  ├─ snort-alert.png
-│  │  └─ firewall-status.png
-│  └─ explanation.md
-└─ README.md
-
 Advanced Examples
 
 a) Snort Rules
@@ -41,5 +25,3 @@ iptables -A INPUT -p tcp --dport 443 -j ACCEPT
 iptables -A INPUT -j LOG --log-prefix "Dropped Packet: "
 echo "Advanced firewall rules applied!"
 
-
----
