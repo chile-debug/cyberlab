@@ -1,17 +1,4 @@
 
-Folder Structure
-
-network-monitoring/
-├─ captures/
-│  ├─ lab-test1.pcap
-│  └─ lab-test2.pcap
-├─ scripts/
-│  ├─ netstat-monitor.sh
-│  └─ packet-capture.sh
-├─ docs/
-│  ├─ network-topology.png
-│  └─ explanation.md
-└─ README.md
 
 Advanced Scripts
 
@@ -46,6 +33,3 @@ OUTPUT="captures/capture_$(date +%F_%H-%M-%S).pcap"
 echo "[*] Capturing $COUNT packets on $INTERFACE..."
 sudo tcpdump -i $INTERFACE -nn -c $COUNT -w $OUTPUT
 echo "[*] Capture saved to $OUTPUT"
-
-
----
